@@ -1,0 +1,348 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Book Service API for Library",
+        "version": "1.0",
+        "title": "Book Service API",
+        "termsOfService": "Terms of service",
+        "contact": {
+            "name": "Pro",
+            "url": "www.pro.com",
+            "email": "restbookapi.com"
+        },
+        "license": {
+            "name": "API License",
+            "url": "https://www.bookapi.com"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "book-controller",
+            "description": "Book Controller"
+        },
+        {
+            "name": "jwt-authenticationcontroller",
+            "description": "Jwt Authenticationcontroller"
+        }
+    ],
+    "paths": {
+        "/authenticate": {
+            "post": {
+                "tags": [
+                    "jwt-authenticationcontroller"
+                ],
+                "summary": "Request for JWT Token",
+                "operationId": "createAuthenticationTokenUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "jwtAuthRequest",
+                        "description": "jwtAuthRequest",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/JwtAuthRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Generate token",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/book": {
+            "get": {
+                "tags": [
+                    "book-controller"
+                ],
+                "summary": "View list of available books",
+                "operationId": "getBooksUsingGET",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved book",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "The resource you were trying to reach is not found"
+                    }
+                }
+            }
+        },
+        "/book/{bookTitle}": {
+            "get": {
+                "tags": [
+                    "book-controller"
+                ],
+                "summary": "View book",
+                "description": "retrieve book with the given title",
+                "operationId": "getBookByTitleUsingGET",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bookTitle",
+                        "in": "path",
+                        "description": "book Title to retrieve book",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved book",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "The resource you were trying to reach is not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "book-controller"
+                ],
+                "summary": "Remove book",
+                "description": "delete book with the given title",
+                "operationId": "deleteBookByTitleUsingDELETE",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "bookTitle",
+                        "in": "path",
+                        "description": "book Title to delete book",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the resources",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "The resource you were trying to reach is not found"
+                    }
+                }
+            }
+        },
+        "/book/{savebook}": {
+            "post": {
+                "tags": [
+                    "book-controller"
+                ],
+                "summary": "save the Book ",
+                "operationId": "saveBookUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "book",
+                        "description": "book",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created book",
+                        "schema": {
+                            "$ref": "#/definitions/APIResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Cannot create the resource"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "APIResponse": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "object"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "Book": {
+            "type": "object",
+            "required": [
+                "author",
+                "title"
+            ],
+            "properties": {
+                "author": {
+                    "type": "string",
+                    "description": "author name"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Please provide title name"
+                }
+            }
+        },
+        "APIResponse«List«Book»»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Book"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "JwtAuthRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "description": "Please provide valid password"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "Please provide valid username"
+                }
+            }
+        },
+        "APIResponse«Book»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "response": {
+                    "$ref": "#/definitions/Book"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "APIResponse«Void»": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
